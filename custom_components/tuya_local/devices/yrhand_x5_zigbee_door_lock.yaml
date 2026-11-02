@@ -1,0 +1,164 @@
+name: YRHAND X5 Zigbee door lock
+entities:
+  - entity: lock
+    dps:
+      # lock_motor_state: Tuya defines true = unlocked, false = locked,
+      # so it is inverted for tuya-local (true = locked)
+      - id: 57
+        name: lock_state
+        type: boolean
+        mapping:
+          - dps_val: false
+            value: true
+          - dps_val: true
+            value: false
+      # Remote unlock without a code (remote_no_pd_setkey + remote_no_dp_key)
+      - id: 48
+        name: set_unlock_code
+        type: base64
+        optional: true
+        sensitive: true
+      - id: 49
+        name: code_unlock
+        type: base64
+        optional: true
+        sensitive: true
+      # Who unlocked it (value = user slot on the lock)
+      - id: 1
+        name: unlock_fingerprint
+        type: integer
+        optional: true
+        persist: false
+      - id: 2
+        name: unlock_password
+        type: integer
+        optional: true
+        persist: false
+      - id: 3
+        name: unlock_temp_pwd
+        type: integer
+        optional: true
+        persist: false
+      - id: 4
+        name: unlock_dynamic_pwd
+        type: integer
+        optional: true
+        persist: false
+      - id: 5
+        name: unlock_card
+        type: integer
+        optional: true
+        persist: false
+      - id: 41
+        name: unlock_app
+        type: integer
+        optional: true
+        persist: false
+      # alarm_lock "tongue_bad" = bolt stuck
+      - id: 9
+        name: jammed
+        type: string
+        optional: true
+        persist: false
+        mapping:
+          - dps_val: "tongue_bad"
+            value: true
+          - value: false
+
+  - entity: binary_sensor
+    class: door
+    name: Door
+    dps:
+      - id: 47
+        name: sensor
+        type: string
+        mapping:
+          - dps_val: "open"
+            value: true
+          - value: false
+
+  - entity: sensor
+    class: battery
+    name: Battery
+    dps:
+      - id: 10
+        name: sensor
+        type: integer
+        unit: "%"
+        optional: true
+
+  - entity: sensor
+    name: Lock alarm
+    dps:
+      - id: 9
+        name: sensor
+        type: string
+        optional: true
+        persist: false
+
+  - entity: binary_sensor
+    name: Doorbell
+    dps:
+      - id: 14
+        name: sensor
+        type: boolean
+        optional: true
+        persist: false
+
+  - entity: binary_sensor
+    name: Double lock
+    dps:
+      - id: 12
+        name: sensor
+        type: boolean
+        optional: true
+
+  - entity: binary_sensor
+    class: safety
+    name: Hijack alarm
+    dps:
+      - id: 35
+        name: sensor
+        type: boolean
+        optional: true
+        persist: false
+
+  - entity: binary_sensor
+    name: Remote unlock result
+    category: diagnostic
+    dps:
+      - id: 22
+        name: sensor
+        type: boolean
+        optional: true
+        persist: false
+
+  - entity: select
+    name: Doorbell tone
+    category: config
+    dps:
+      - id: 15
+        name: option
+        type: string
+        optional: true
+        mapping:
+          - dps_val: ding_0
+            value: "Tone 1"
+          - dps_val: ding_1
+            value: "Tone 2"
+          - dps_val: ding_2
+            value: "Tone 3"
+          - dps_val: ding_3
+            value: "Tone 4"
+          - dps_val: ding_4
+            value: "Tone 5"
+          - dps_val: ding_5
+            value: "Tone 6"
+          - dps_val: ding_6
+            value: "Tone 7"
+          - dps_val: ding_7
+            value: "Tone 8"
+          - dps_val: ding_8
+            value: "Tone 9"
+          - dps_val: ding_9
+            value: "Tone 10"
